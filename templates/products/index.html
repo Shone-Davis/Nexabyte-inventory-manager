@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% block title %}Products - Nexabyte{% endblock %}
+{% block content %}
+
+<!-- Header -->
+<div class="mb-8 flex item-center justify-between">
+    <div>
+        <h1 class="text-3xl font-semibold text-gray-900">Products</h1>
+        <p class="text-gray-500 text-sm mt-1">{{ products|length }} items in inventory</p>
+    </div>
+    <a href="{{url_for('products.add')}}" class="bg-gray-900 text-white px-5 py-2.5 rounded-full text-sm
+              font-medium hover:bg-gray-700 transition-colors">
+        + Add Product
+    </a>
+</div>
+
+<!-- Products Table -->
+<div class="bg-white border border-gray-100 rounded-2xl overflow-hidden shadow-sm">
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="border-b border-gray-100 bg-gray-50">
+                <th class="text-left px-6 py-4 text-gray-500 font-medium">Products</th>
+                <th class="text-left px-6 py-4 text-gray-500 font-medium">Category</th>
+                <th class="text-left px-6 py-4 text-gray-500 font-medium">Price</th>
+                <th class="text-left px-6 py-4 text-gray-500 font-medium">Stock</th>
+                <th class="text-left px-6 py-4 text-gray-500 font-medium">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in products %}
+            <tr class="border-b border-gray-50 last:border-0
+                       hover:bg-gray-50 transition-colors">
+
+                <!-- Name + Description -->
+                <td class="px-6 py-4">
+                    <p class="font-medium text-gray-900">{{ product.name }}</p>
+                    {% if product.description %}
+                    <p class="text-gray-400 text-xs mt-0.5">{{ product.description }}</p>
+                    {% endif %}
+                </td>
+
+                <!-- Category -->
+                <td class="px-6 py-4">
+                    <span class="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-medium">
+                        {{product.category}}
+                    </span>
+                </td>
+
+                <!-- Price -->
+                <td class="px-6 py-4 font-medium text-gray-900">
+                    {{ "%.2f"|format(product.price) }}
+                </td>
+
+                <!-- Stock -->
+                <td class="px-6 py-4">
+                    {% if product.is_low_stock %}
+                    <span class="bg-red-100 text-red-600 px-3 py-1 rounded-full text-xs font-medium">
+                        {{ product.stock }} - Low Stock
+                    </span>
+                    {% else %}
+                    <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-medium">
+                        {{ product.stock }} in stock
+                    </span>
+                    {% endif %}
+                </td>
+
+                {% if not products %}
+                <div class="text-center py-16">
+                    <p class="text-gray-400 text-sm">No products yet!</p>
+                    <a href="{{url_for('products.add')}}" class="mt-4 inline-block bg-gray-900 text-white px-5 py-2.5
+                  rounded-full text-sm hover:bg-gray-700 transition-colors">
+                        Add your first product
+                    </a>
+                </div>
+                {% endif %}
+                {% endfor %}
+</div>
+{% endblock %}
