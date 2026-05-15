@@ -1,29 +1,48 @@
 {% extends "base.html" %}
-{% block title %}Add Product — NEXABYTE{% endblock %}
+{% block title %}Edit Product — NEXABYTE{% endblock %}
 
 {% block content %}
 
 <!-- Header -->
 <div class="mb-8 flex items-center justify-between">
     <div>
-        <h1 class="text-3xl font-semibold text-gray-900">Add Product</h1>
-        <p class="text-gray-500 text-sm mt-1">Add a new item to your inventory</p>
+        <h1 class="text-3xl font-semibold text-gray-900">Edit Product</h1>
+        <p class="text-gray-500 text-sm mt-1">Edit the existing product in inventory</p>
     </div>
     <a href="{{ url_for('products.index') }}" class="text-sm text-gray-500 hover:text-gray-900 transition-colors">
         ← Back to Products
     </a>
 </div>
 
+<!-- Flashed Context-Aware Validation Messages -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+<div class="max-w-2xl mb-6 space-y-3">
+    {% for category, message in messages %}
+    <div
+        class="p-4 rounded-xl text-sm font-medium border flex items-center gap-3 {% if category == 'success' %} bg-green-50 text-green-700 border-green-200 {% else %} bg-red-50 text-red-700 border-red-200 {% endif %}">
+        {% if category == 'success' %}
+        <span class="text-base">✓</span>
+        {% else %}
+        <span class="text-base">⚠</span>
+        {% endif %}
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+{% endwith %}
+
 <!-- Form Card -->
 <div class="max-w-2xl bg-white border border-gray-100 rounded-2xl p-8 shadow-sm">
-    <form method="POST" class="space-y-6">
+    <form method="POST" action="{{url_for('products.edit', id = product.id)}}" class="space-y-6">
 
         <!-- Name -->
         <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">
                 Product Name
             </label>
-            <input type="text" name="name" required placeholder="e.g. iPhone 17 Pro" class="w-full px-4 py-3 rounded-xl border border-gray-200
+            <input type="text" name="name" required value="{{ product.name }}" class="w-full px-4 py-3 rounded-xl border border-gray-200
                           bg-gray-50 text-sm focus:outline-none focus:ring-2
                           focus:ring-gray-900 focus:bg-white transition-all">
         </div>
@@ -34,7 +53,7 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">
                     Price ($)
                 </label>
-                <input type="number" name="price" step="0.01" required placeholder="0.00" class="w-full px-4 py-3 rounded-xl border border-gray-200
+                <input type="number" name="price" step="0.01" value="{{ product.price }}" class="w-full px-4 py-3 rounded-xl border border-gray-200
                               bg-gray-50 text-sm focus:outline-none focus:ring-2
                               focus:ring-gray-900 focus:bg-white transition-all">
             </div>
@@ -45,10 +64,13 @@
                 <select name="category" required class="w-full px-4 py-3 rounded-xl border border-gray-200
                                bg-gray-50 text-sm focus:outline-none focus:ring-2
                                focus:ring-gray-900 focus:bg-white transition-all">
-                    <option value="" disabled selected>Select category</option>
+                    <option value="" disabled {% if not product.category %}selected{% endif %}>Select category</option>
                     {% for cat in categories %}
-                    <option value="{{ cat }}">{{ cat }}</option>
+                    <option value="{{ cat }}" {% if product.category==cat %}selected{% endif %}>
+                        {{ cat }}
+                    </option>
                     {% endfor %}
+
                 </select>
             </div>
         </div>
@@ -58,10 +80,10 @@
             <label class="block text-sm font-medium text-gray-700 mb-1">
                 Description
             </label>
-            <textarea name="description" rows="3" placeholder="Describe the product..." class="w-full px-4 py-3 rounded-xl border border-gray-200
+            <textarea name="description" class="w-full px-4 py-3 rounded-xl border border-gray-200
                              bg-gray-50 text-sm focus:outline-none focus:ring-2
                              focus:ring-gray-900 focus:bg-white transition-all
-                             resize-none"></textarea>
+                             resize-none">{{ product.description}}</textarea>
         </div>
 
         <!-- Stock + Threshold side by side -->
@@ -70,7 +92,7 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">
                     Stock Quantity
                 </label>
-                <input type="number" name="stock" value="0" min="0" class="w-full px-4 py-3 rounded-xl border border-gray-200
+                <input type="number" name="stock" value="{{product.stock}}" class="w-full px-4 py-3 rounded-xl border border-gray-200
                               bg-gray-50 text-sm focus:outline-none focus:ring-2
                               focus:ring-gray-900 focus:bg-white transition-all">
             </div>
@@ -78,7 +100,7 @@
                 <label class="block text-sm font-medium text-gray-700 mb-1">
                     Low Stock Alert At
                 </label>
-                <input type="number" name="low_stock_threshold" value="10" min="1" class="w-full px-4 py-3 rounded-xl border border-gray-200
+                <input type="number" name="low_stock_threshold" value="{{ product.low_stock_threshold }}" class="w-full px-4 py-3 rounded-xl border border-gray-200
                               bg-gray-50 text-sm focus:outline-none focus:ring-2
                               focus:ring-gray-900 focus:bg-white transition-all">
             </div>
@@ -92,7 +114,7 @@
             </a>
             <button type="submit" class="bg-gray-900 text-white px-8 py-3 rounded-full text-sm
                            font-medium hover:bg-gray-700 transition-colors">
-                Add Product
+                Save Changes
             </button>
         </div>
 
