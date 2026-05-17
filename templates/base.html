@@ -19,10 +19,10 @@
     </script>
 </head>
 
-<body class="bg-white text-gray-900 font-sans antialiased">
+<body class="bg-[#0a0a0a] text-white font-sans antialiased">
 
     <!--NAVBAR-->
-    <nav class="border-b boder-gray-200 bg-white/80 backdrop-blur-md sticky top-0 z-50">
+    <nav class="border-b border-white/10 bg-[#0a0a0a]/80 backdrop-blur-md sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
 
             <!-- Logo -->
@@ -34,25 +34,25 @@
             <div class="flex items-center gap-8">
                 {% if current_user.is_authenticated %}
                 <a href="{{ url_for('dashboard.index') }}"
-                    class="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                    class="text-sm text-white/60 hover:text-white transition-colors">
                     Dashboard</a>
                 <a href="{{ url_for('products.index') }}"
-                    class="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                    class="text-sm text-white/60 hover:text-white transition-colors">
                     Products</a>
                 <a href="{{ url_for('products.add') }}"
-                    class="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                    class="text-sm text-white/60 hover:text-white transition-colors">
                     Add Products</a>
                 <div class="flex items-center gap-4">
                     <span class="text-sm text-gray-400">
                         {{ current_user.username }}
                     </span>
                     <a href="{{ url_for('auth.logout')}}"
-                        class="text-sm bg-gray-900 text-white px-4 py-2 rounded-full hover:bg-gray-700 transition-colors">
+                        class="text-sm bg-white text-black px-4 py-2 rounded-full hover:bg-white/90 transition-colors">
                         Logout</a>
                 </div>
                 {% else %}
                 <a href="{{ url_for('auth.login')}}"
-                    class="text-sm bg-gray-900 text-white px-4 py-2 rounded-full hover:bg-gray-700 transition-colors">
+                    class="text-sm bg-white text-black px-4 py-2 rounded-full hover:bg-white/90 transition-colors">
                     Login</a>
                 {% endif %}
             </div>
@@ -65,9 +65,9 @@
     <div class="max-w-7xl mx-auto px-6 mt-4">
         {% for msg_category, message in messages %}
         <div class="flex items-center gap-3 px-4 py-3 rounded-xl mb-2
-                        {% if msg_category == 'success' %}bg-green-50 text-green-800 border border-green-200
-                        {% elif msg_category == 'error' %}bg-red-50 text-red-800 border border-red-200
-                        {% else %}bg-blue-50 text-blue-800 border border-blue-200{% endif %}">
+                        {% if msg_category == 'success' %}bg-green-500/10 text-green-400 border border-green-500/20
+                        {% elif msg_category == 'error' %}bg-red-500/10 text-red-400 border border-red-500/20
+                        {% else %}bg-blue-500/10 text-blue-400 border border-blue-500/20{% endif %}">
             <span>{{ message }}</span>
         </div>
         {% endfor %}
@@ -81,10 +81,10 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="border-t border-gray-100 mt-20">
+    <footer class="border-t border-white/10 mt-20">
         <div class="max-w-7xl mx-auto px-6 py-8 flex justify-between items-center">
-            <span class="text-sm font-semibold text-gray-900">Nexabyte</span>
-            <span class="text-sm text-gray-400">© 2026 All rights reserved.</span>
+            <span class="text-sm font-semibold text-white">Nexabyte</span>
+            <span class="text-sm text-white/40">© 2026 All rights reserved.</span>
         </div>
     </footer>
 </body>
