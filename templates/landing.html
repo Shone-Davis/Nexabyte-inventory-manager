@@ -1,0 +1,236 @@
+{% extends "base.html" %}
+{% block title %}NEXABYTE — Modern Inventory Infrastructure{% endblock %}
+
+{% block nav_content %}
+<a href="{{ url_for('dashboard.home') }}" class="text-xl font-semibold tracking-tight text-white">
+    NEXABYTE
+</a>
+<a href="{{ url_for('auth.login') }}" class="text-sm bg-white text-black px-4 py-2 rounded-full
+          hover:bg-white/90 transition-colors font-medium">
+    Login →
+</a>
+{% endblock nav_content %}
+
+{% block content %}
+
+<!-- HERO -->
+
+<div class="text-center pt-24 pb-16 px-4">
+
+    <!-- Top tag -->
+    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full
+                border border-white/10 bg-white/5 text-white/60 text-xs
+                mb-8 tracking-wide">
+        ⬡ &nbsp; Inventory Management — Built for Teams
+    </div>
+
+    <!-- Main headline -->
+    <h1 class="text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-tight
+               text-white max-w-4xl mx-auto leading-[1.1] mb-6">
+        Modern Inventory Infrastructure for Growing Businesses
+    </h1>
+
+    <!-- Subheadline -->
+    <p class="text-white/50 text-lg max-w-2xl mx-auto leading-relaxed mb-10">
+        NEXABYTE helps teams manage inventory, track stock levels,
+        monitor business performance, and prevent shortages —
+        all from one centralized platform.
+    </p>
+
+    <!-- CTA Buttons -->
+    <div class="flex items-center justify-center gap-4">
+        <a href="{{ url_for('auth.login') }}" class="bg-white text-black px-6 py-3 rounded-full text-sm
+                  font-medium hover:bg-white/90 transition-colors">
+            Get Started →
+        </a>
+        <a href="#features" class="text-white/50 hover:text-white text-sm transition-colors">
+            See how it works ↓
+        </a>
+    </div>
+
+    <!-- Dashboard Preview Card -->
+    <div class="mt-16 max-w-3xl mx-auto rounded-2xl border border-white/10
+                bg-white/5 p-6 text-left backdrop-blur-sm">
+
+        <!-- Mock top bar -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <p class="text-white font-medium text-sm">Dashboard</p>
+                <p class="text-white/40 text-xs mt-0.5">Inventory Overview</p>
+            </div>
+            <div class="flex items-center gap-2">
+                <div class="w-2 h-2 rounded-full bg-green-400"></div>
+                <span class="text-white/40 text-xs">Live</span>
+            </div>
+        </div>
+
+        <!-- Mock stats row -->
+        <div class="grid grid-cols-3 gap-4 mb-6">
+            <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+                <p class="text-white/40 text-xs mb-1">Total Products</p>
+                <p class="text-white text-2xl font-semibold">248</p>
+                <p class="text-green-400 text-xs mt-1">↑ 12 this week</p>
+            </div>
+            <div class="bg-white/5 rounded-xl p-4 border border-white/5">
+                <p class="text-white/40 text-xs mb-1">Inventory Value</p>
+                <p class="text-white text-2xl font-semibold">$84,320</p>
+                <p class="text-green-400 text-xs mt-1">↑ 3.2% this month</p>
+            </div>
+            <div class="bg-red-500/10 rounded-xl p-4 border border-red-500/20">
+                <p class="text-red-400 text-xs mb-1">Low Stock Alerts</p>
+                <p class="text-white text-2xl font-semibold">3</p>
+                <p class="text-red-400 text-xs mt-1">Needs attention</p>
+            </div>
+        </div>
+
+        <!-- Mock table rows -->
+        <div class="space-y-2">
+            <div class="grid grid-cols-4 items-center gap-4 py-2
+                        border-b border-white/5 text-xs">
+                <span class="text-white/80 font-medium">MacBook Pro M3</span>
+                <span class="bg-white/10 text-white/60 px-2 py-0.5 rounded-full text-center w-max text-center w-max">
+                    Laptops
+                </span>
+                <span class="text-white/60">$1,999.99</span>
+                <span
+                    class="bg-green-500/10 text-green-400 px-2 py-0.5 rounded-full text-center w-max text-center w-max">
+                    15 in stock
+                </span>
+            </div>
+            <div class="grid grid-cols-4 items-center gap-4 py-2
+                        border-b border-white/5 text-xs">
+                <span class="text-white/80 font-medium">AirPods Pro</span>
+                <span class="bg-white/10 text-white/60 px-2 py-0.5 rounded-full text-center w-max">
+                    Audio
+                </span>
+                <span class="text-white/60">$249.99</span>
+                <span class="bg-red-500/10 text-red-400 px-2 py-0.5 rounded-full text-center w-max">
+                    3 — Low Stock
+                </span>
+            </div>
+            <div class="grid grid-cols-4 items-center gap-4 py-2 text-xs">
+                <span class="text-white/80 font-medium">Magic Keyboard</span>
+                <span class="bg-white/10 text-white/60 px-2 py-0.5 rounded-full text-center w-max">
+                    Accessories
+                </span>
+                <span class="text-white/60">$99.99</span>
+                <span class="bg-green-500/10 text-green-400 px-2 py-0.5 rounded-full text-center w-max">
+                    24 in stock
+                </span>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<!-- STATS BAR -->
+
+<div class="border-y border-white/10 py-12">
+    <div class="grid grid-cols-3 gap-8 text-center max-w-3xl mx-auto">
+        <div>
+            <p class="text-3xl font-semibold text-white">100%</p>
+            <p class="text-white/40 text-sm mt-1">Accurate</p>
+        </div>
+        <div>
+            <p class="text-3xl font-semibold text-white">Instant</p>
+            <p class="text-white/40 text-sm mt-1">Alerts</p>
+        </div>
+        <div>
+            <p class="text-3xl font-semibold text-white">Team</p>
+            <p class="text-white/40 text-sm mt-1">Ready</p>
+        </div>
+    </div>
+</div>
+
+
+<!-- FEATURES -->
+
+<div class="py-24" id="features">
+
+    <div class="text-center mb-16">
+        <h2 class="text-3xl font-semibold text-white">
+            Everything your team needs
+        </h2>
+        <p class="text-white/40 text-sm mt-3 max-w-xl mx-auto">
+            Built for modern businesses that need visibility,
+            speed, and control over their inventory operations.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-3 gap-6">
+
+        <!-- Feature 1 -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-6
+                    hover:bg-white/8 transition-colors">
+            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center
+                        justify-center text-lg mb-4">
+                📦
+            </div>
+            <h3 class="text-white font-medium mb-2">
+                Real-time Stock Tracking
+            </h3>
+            <p class="text-white/40 text-sm leading-relaxed">
+                Monitor every product in real time. Know exactly
+                what you have, where it is, and what it's worth
+                at any moment.
+            </p>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-6
+                    hover:bg-white/8 transition-colors">
+            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center
+                        justify-center text-lg mb-4">
+                🔔
+            </div>
+            <h3 class="text-white font-medium mb-2">
+                Low Stock Alerts
+            </h3>
+            <p class="text-white/40 text-sm leading-relaxed">
+                Set custom thresholds per product. Get instant
+                alerts before you run out — never lose a sale
+                to an empty shelf again.
+            </p>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-6
+                    hover:bg-white/8 transition-colors">
+            <div class="w-10 h-10 rounded-xl bg-white/10 flex items-center
+                        justify-center text-lg mb-4">
+                👥
+            </div>
+            <h3 class="text-white font-medium mb-2">
+                Team Access Control
+            </h3>
+            <p class="text-white/40 text-sm leading-relaxed">
+                Role-based access for your whole team. Admins
+                manage everything. Staff see what they need.
+                Nothing more.
+            </p>
+        </div>
+
+    </div>
+</div>
+
+<!-- CTA -->
+
+<div class="text-center py-24 border-t border-white/10">
+
+    <h2 class="text-4xl font-semibold text-white max-w-2xl mx-auto
+               leading-tight mb-4">
+        Built for modern teams that need visibility, speed,
+        and control.
+    </h2>
+    <p class="text-white/40 text-sm mb-8">
+        Start managing your inventory with precision today.
+    </p>
+    <a href="{{ url_for('auth.login') }}" class="bg-white text-black px-8 py-3 rounded-full text-sm
+              font-medium hover:bg-white/90 transition-colors inline-block">
+        Get Started →
+    </a>
+
+</div>
+
+{% endblock %}

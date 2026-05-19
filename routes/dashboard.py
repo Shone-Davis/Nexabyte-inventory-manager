@@ -1,10 +1,17 @@
-from flask import Blueprint, render_template
-from flask_login import login_required
+from flask import Blueprint, render_template, redirect, url_for
+from flask_login import login_required, current_user
 from models import Product
 dashboard = Blueprint("dashboard", __name__)
 
 
 @dashboard.route("/")
+def home():
+    if current_user.is_authenticated:
+        return redirect(url_for("dashboard.index"))
+    return redirect(url_for("dashboard.landing"))
+
+
+@dashboard.route("/dashboard")
 @login_required
 def index():
     total_products = Product.query.count()
@@ -31,3 +38,8 @@ def db_category_counts():
         Product.category,
         func.count(Product.id).label("count")
     ).group_by(Product.category).all()
+
+
+@dashboard.route("/landing")
+def landing():
+    return render_template("landing.html")
