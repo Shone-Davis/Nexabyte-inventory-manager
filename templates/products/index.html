@@ -52,15 +52,15 @@
                 </td>
 
                 <!-- Stock -->
-                <td class="px-6 py-4">
+                <td class="px-6 py-4 min-w-[130px]">
                     {% if product.is_low_stock %}
                     <span
-                        class="bg-red-500/10 text-red-400 px-3 py-1 rounded-full text-xs font-medium border border-red-500/20">
+                        class="bg-red-500/10 text-red-400 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap inline-flex items-center gap-1">
                         {{ product.stock }} - Low Stock
                     </span>
                     {% else %}
                     <span
-                        class="bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-xs font-medium border border-green-500/20">
+                        class="bg-green-500/10 text-green-400 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap inline-flex items-center gap-1">
                         {{ product.stock }} in stock
                     </span>
                     {% endif %}

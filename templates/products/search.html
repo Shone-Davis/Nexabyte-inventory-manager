@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+{% block title %}Search — NEXABYTE{% endblock %}
+
+{% block content %}
+
+{% if query %}
+
+<!-- Header -->
+<div class="mb-8">
+    <h1 class="text-3xl font-semibold text-white">
+        Results for "{{ query }}"
+    </h1>
+    {% if results %}
+    <p class="text-white/40 text-sm mt-1">
+        {{ results|length }} item(s) found
+    </p>
+    {% else %}
+    <p class="text-white/40 text-sm mt-1">
+        No products found for "{{ query }}"
+    </p>
+    {% endif %}
+</div>
+
+<!-- Results Table -->
+{% if results %}
+<div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="border-b border-white/10 bg-white/5">
+                <th class="text-left px-6 py-4 text-white/40 font-medium">Product</th>
+                <th class="text-left px-6 py-4 text-white/40 font-medium">Category</th>
+                <th class="text-left px-6 py-4 text-white/40 font-medium">Price</th>
+                <th class="text-left px-6 py-4 text-white/40 font-medium">Stock</th>
+                <th class="text-left px-6 py-4 text-white/40 font-medium">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for product in results %}
+            <tr class="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
+
+                <td class="px-6 py-4">
+                    <p class="font-medium text-white">{{ product.name }}</p>
+                    {% if product.description %}
+                    <p class="text-white/40 text-xs mt-0.5">
+                        {{ product.description[:50] }}...
+                    </p>
+                    {% endif %}
+                </td>
+
+                <td class="px-6 py-4">
+                    <span class="bg-white/10 text-white/60 px-3 py-1
+                                     rounded-full text-xs font-medium">
+                        {{ product.category }}
+                    </span>
+                </td>
+
+                <td class="px-6 py-4 font-medium text-white">
+                    ${{ "%.2f"|format(product.price) }}
+                </td>
+
+                <td class="px-6 py-4 min-w-[130px]">
+                    {% if product.is_low_stock %}
+                    <span class="bg-red-500/10 text-red-400 border border-red-500/20
+                 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap
+                 inline-flex items-center gap-1">
+                        {{ product.stock }} — Low Stock
+                    </span>
+                    {% else %}
+                    <span class="bg-green-500/10 text-green-400 border border-green-500/20
+                 px-3 py-1 rounded-full text-xs font-medium whitespace-nowrap
+                 inline-flex items-center gap-1">
+                        {{ product.stock }} in stock
+                    </span>
+                    {% endif %}
+                </td>
+
+                <td class="px-6 py-4">
+                    <div class="flex items-center gap-3">
+                        <a href="{{ url_for('products.edit', id=product.id) }}"
+                            class="text-white/40 hover:text-white transition-colors text-xs font-medium">
+                            Edit
+                        </a>
+                        <form action="{{ url_for('products.delete', id=product.id) }}" method="POST"
+                            onsubmit="return confirm('Delete {{ product.name }}?')">
+                            <button type="submit"
+                                class="text-red-400 hover:text-red-300 transition-colors text-xs font-medium">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+                </td>
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+{% else %}
+
+<!-- No query entered yet -->
+<div class="text-center py-24">
+    <p class="text-white/40 text-sm">
+        Enter a product name in the search bar above.
+    </p>
+    <a href="{{ url_for('products.index') }}" class="mt-4 inline-block text-white/40 hover:text-white
+                  text-sm transition-colors">
+        ← Back to Products
+    </a>
+</div>
+
+{% endif %}
+
+{% endblock %}

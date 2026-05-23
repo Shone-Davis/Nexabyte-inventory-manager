@@ -110,3 +110,14 @@ def edit(id):
         except ValueError:
             flash("Invalid price format!", "error")
     return render_template("products/edit.html", product=product, categories=CATEGORIES)
+
+
+@products.route("/product/search")
+@login_required
+def search():
+    query = request.args.get("q", "").strip().lower()
+    results = Product.query.filter(
+        Product.name.ilike(f"%{query}%")
+    ).all()
+
+    return render_template("products/search.html", query=query, results=results)
