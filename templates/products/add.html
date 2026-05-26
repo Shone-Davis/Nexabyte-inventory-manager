@@ -9,8 +9,13 @@
         <h1 class="text-3xl font-semibold text-white">Add Product</h1>
         <p class="text-white/40 text-sm mt-1">Add a new item to your inventory</p>
     </div>
-    <a href="{{ url_for('products.index') }}" class="text-sm text-white/40 hover:text-white transition-colors">
-        ← Back to Products
+    <a href="{{ url_for('products.index') }}" class="text-white/40 hover:text-white text-sm transition-colors
+          mb-8 inline-flex items-center gap-2 group">
+        <svg class="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor"
+            viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Products
     </a>
 </div>
 

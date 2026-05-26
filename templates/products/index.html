@@ -33,7 +33,9 @@
 
                 <!-- Name + Description -->
                 <td class="px-6 py-4">
-                    <p class="font-medium text-white">{{ product.name }}</p>
+                    <a href="{{ url_for('products.detail', id=product.id) }}" class="font-medium text-white">
+                        {{ product.name }}
+                    </a>
                     {% if product.description %}
                     <p class="text-white/40 text-xs mt-0.5">{{ product.description }}</p>
                     {% endif %}

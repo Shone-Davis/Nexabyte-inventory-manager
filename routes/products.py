@@ -121,3 +121,10 @@ def search():
     ).all()
 
     return render_template("products/search.html", query=query, results=results)
+
+
+@products.route("/products/<int:id>")
+@login_required
+def detail(id):
+    product = Product.query.get_or_404(id)
+    return render_template("products/detail.html", product=product)
