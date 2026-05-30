@@ -4,7 +4,8 @@ from flask_login import login_required
 
 products = Blueprint("products", __name__)
 
-CATEGORIES = ["Laptops", "Phones", "Audio", "Tablets", "Accessories"]
+CATEGORIES = ["Laptops", "Phones", "Audio",
+              "Tablets", "Accessories"]
 
 
 @products.route("/products")
