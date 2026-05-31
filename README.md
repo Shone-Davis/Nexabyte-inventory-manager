@@ -31,7 +31,7 @@ https://nexabyte-inventory-manager.up.railway.app
 
 ## Tech Stack
 - **Backend:** Python, Flask, SQLAlchemy, Flask-Login
-- **Database:** SQLite with Flask-Migrate
+- **Database:** PostgreSQL (Railway) with Flask-Migrate 
 - **Frontend:** Tailwind CSS, Jinja2 Templates
 - **Deployment:** Railway
 
