@@ -6,6 +6,8 @@ from flask_migrate import Migrate
 
 login_manager = LoginManager()
 
+# app factory
+
 
 def create_app():
     app = Flask(__name__)
