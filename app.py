@@ -33,7 +33,15 @@ def create_app():
     app.register_blueprint(dashboard)
     app.register_blueprint(admin)
 
+    # TEMPORARY — DELETE AFTER RUNNING ONCE
+    @app.route("/run-migrations-now-delete-after")
+    def run_migrations():
+        from flask_migrate import upgrade
+        upgrade()
+        return "Migrations complete!"
+
     # Error handlers
+
     @app.errorhandler(404)
     def not_found(e):
         return render_template("errors/404.html"), 404
