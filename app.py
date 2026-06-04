@@ -36,7 +36,6 @@ def create_app():
     app.register_blueprint(admin)
 
     # Error handlers
-
     @app.errorhandler(404)
     def not_found(e):
         return render_template("errors/404.html"), 404
@@ -49,15 +48,25 @@ def create_app():
     def forbidden(e):
         return render_template("errors/403.html"), 403
 
-    # Create tables and seed admin
+    # Create tables and seed
     with app.app_context():
         db.create_all()
-        # Check if role column exists before seeding
-        from sqlalchemy import inspect
+        from sqlalchemy import inspect, text
         inspector = inspect(db.engine)
         columns = [c['name'] for c in inspector.get_columns('user')]
 
         if 'role' in columns:
+
+            # Fix existing admin user with NULL role
+            db.session.execute(
+                text(
+                    "UPDATE \"user\" SET role = 'admin', is_admin = true WHERE username = :username"),
+                {"username": app.config["ADMIN_USERNAME"]}
+            )
+            db.session.commit()
+            print("Admin role fixed!")
+
+            # Create admin if doesn't exist
             if not User.query.filter_by(
                 username=app.config["ADMIN_USERNAME"]
             ).first():
@@ -71,6 +80,7 @@ def create_app():
                 db.session.commit()
                 print("Admin user created!")
 
+            # Seed products if empty
             if Product.query.count() == 0:
                 samples = [
                     Product(name="MacBook Pro M3", price=1999.99,
@@ -97,6 +107,7 @@ def create_app():
                 db.session.add_all(samples)
                 db.session.commit()
                 print("Sample products added!")
+
         else:
             print("Skipping seed — migrations pending")
 
