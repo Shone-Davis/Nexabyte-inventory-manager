@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Staff Management - Nexabyte{% endblock %}
+{% block content %}
+<div class="mb-8 flex items-center justify-between">
+    <div>
+        <h1 class="text-3xl font-semibold text-white">Staff Manangement</h1>
+        <p class="text-white/40 text-sm mt-1">
+            {{staff_members | length }} staff member(s)
+        </p>
+    </div>
+    <a href="{{url_for('admin.create_staff')}}" class="bg-white text-black px-5 py-2.5 rounded-full text-sm
+    font-medium hover:bg-white/90 transition-colors">
+        + Add Staff
+    </a>
+</div>
+
+<!-- Staff Table -->
+<div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
+    {% if staff_members %}
+    <table class="w-full text-sm">
+        <thead>
+            <tr class="border-b border-white/10 bg-white/5">
+                <th class="text-left px-6 py-4 text-white/40 font-medium">Username</th>
+                <th class="text-left px-6 py-4 text-white/40 font-medium">Role</th>
+                <th class="text-left px-6 py-4 text-white/40 font-medium">Created</th>
+                <th class="text-left px-6 py-4 text-white/40 font-medium">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in staff_members %}
+            <tr class="border-b border-white/5 last:border-0 hover:bg-white/5 transition-colors">
+                <td class="px-6 py-4">
+                    <p class="font-medium text-white">{{ member.username }}</p>
+                </td>
+                <td class="px-6 py-4">
+                    <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20
+                                 px-3 py-1 rounded-full text-sm font-medium">
+                        Staff
+                    </span>
+                </td>
+                <td class="px-6 py-4 text-white/40 text-sm">
+                    {{ member.created_at.strftime('%B %d, %Y') if member.created_at else 'N/A'}}
+                </td>
+                <td class="px-6 py-4">
+                    <form action="{{ url_for('admin.delete_staff', id =member.id)}}" method="POST"
+                        onsbmit="return confirm('Remove {{member.username }}?')">
+                        <button type="submit"
+                            class="text-red-400 hover:text-red-300 transition-colors text-xs font-medium">
+                            Remove
+                        </button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="text-center py-16">
+        <p class="text-white/40 text-sm">No staff members yet.</p>
+        <a href="{{url_for('admin.create_staff')}}" class="mt-4 inline-block bg-white text-black px-5 py-2.5
+                                                           rounded-full text-sm hover:bg-white/90 transition-colors">
+            Add your staff member
+        </a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

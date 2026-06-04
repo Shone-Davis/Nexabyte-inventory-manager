@@ -26,10 +26,12 @@ def create_app():
     from routes.auth import auth
     from routes.products import products
     from routes.dashboard import dashboard
+    from routes.admin import admin
 
     app.register_blueprint(auth)
     app.register_blueprint(products)
     app.register_blueprint(dashboard)
+    app.register_blueprint(admin)
 
     # Error handlers
     @app.errorhandler(404)
@@ -40,11 +42,16 @@ def create_app():
     def server_error(e):
         return render_template("errors/500.html"), 500
 
+    @app.errorhandler(403)
+    def forbidden(e):
+        return render_template("errors/403.html"), 403
+
     # Create tables and seed admin
     with app.app_context():
         db.create_all()
         if not User.query.filter_by(username=app.config["ADMIN_USERNAME"]).first():
-            admin = User(username=app.config["ADMIN_USERNAME"])
+            admin = User(
+                username=app.config["ADMIN_USERNAME"], role="admin", is_admin=True)
             admin.set_password(app.config["ADMIN_PASSWORD"])
             db.session.add(admin)
             db.session.commit()

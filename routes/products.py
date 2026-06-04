@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, flash, request, redirect, url_for
 from models import Product, db
-from flask_login import login_required
+from flask_login import login_required, current_user
+from routes.admin import admin_required
 
 products = Blueprint("products", __name__)
 
@@ -17,6 +18,7 @@ def index():
 
 @products.route("/products/add", methods=["GET", "POST"])
 @login_required
+@admin_required
 def add():
     error = None
 
@@ -59,6 +61,7 @@ def add():
 
 @products.route("/products/delete/<int:id>", methods=["POST"])
 @login_required
+@admin_required
 def delete(id):
     product = Product.query.get_or_404(id)
     try:
@@ -74,6 +77,7 @@ def delete(id):
 
 @products.route("/products/edit/<int:id>", methods=["GET", "POST"])
 @login_required
+@admin_required
 def edit(id):
     error = None
     product = Product.query.get_or_404(id)  # find product or show 404

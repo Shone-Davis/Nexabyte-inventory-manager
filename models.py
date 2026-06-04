@@ -10,7 +10,8 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password_hash = db.Column(db.String(200), nullable=False)
-    is_admin = db.Column(db.Boolean, default=True)
+    is_admin = db.Column(db.Boolean, default=False)
+    role = db.Column(db.String(20), default="staff")
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
     def set_password(self, password):
@@ -21,6 +22,14 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return f"<User {self.username}>"
+
+    @property
+    def is_admin_user(self):
+        return self.role == "admin"
+
+    @property
+    def is_staff(self):
+        return self.role == "staff"
 
 
 class Product(db.Model):

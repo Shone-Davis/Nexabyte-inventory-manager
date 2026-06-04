@@ -73,6 +73,8 @@
                     <!-- Actions -->
                     <td class="px-6 py-4">
                         <div class="flex items-center gap-3">
+                            {% if current_user.is_authenticated %}
+                            {% if current_user.is_admin_user %}
                             <a href="{{ url_for('products.edit', id=product.id) }}"
                                 class="text-white/40 hover:text-white transition-colors text-xs font-medium">
                                 Edit
@@ -84,6 +86,10 @@
                                     Delete
                                 </button>
                             </form>
+                            {% else %}
+                            <span class="text-white/20 text-xs">View Only</span>
+                            {% endif %}
+                            {% endif %}
                         </div>
                     </td>
                 </tr>

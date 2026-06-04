@@ -39,9 +39,17 @@
                 <a href="{{ url_for('products.index') }}"
                     class="text-sm text-white/60 hover:text-white transition-colors">
                     Products</a>
+                {% if current_user.is_admin_user %}
+                <a href="{{ url_for('admin.staff_list') }}"
+                    class="hidden md:block text-sm text-white/60 hover:text-white transition-colors">
+                    Staff
+                </a>
+                {% endif %}
+                {% if current_user.is_admin_user%}
                 <a href="{{ url_for('products.add') }}"
                     class="text-sm text-white/60 hover:text-white transition-colors">
                     Add Products</a>
+                {% endif %}
                 {% if current_user.is_authenticated %}
                 <form action="{{url_for('products.search')}}" method="GET" class="flex items-center gap-2">
                     <input type="text" name="q" placeholder="Search Products..." class="bg-white/5 border border-white/10 text-white text-sm
