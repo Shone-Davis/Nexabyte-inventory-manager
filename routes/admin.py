@@ -40,7 +40,7 @@ def create_staff():
             flash("Password must be at least 6 characters!", "error")
         elif User.query.filter_by(username=username).first():
             flash(f"Username '{username}' already exists!", "error")
-        else:                    # ← else belongs HERE inside the POST block
+        else:
             new_staff = User(
                 username=username,
                 role="staff",
