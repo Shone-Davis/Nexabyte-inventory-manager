@@ -48,52 +48,55 @@ def create_app():
         return render_template("errors/403.html"), 403
 
     # Create tables and seed admin
-with app.app_context():
-    try:
+    with app.app_context():
         db.create_all()
-        if not User.query.filter_by(
-            username=app.config["ADMIN_USERNAME"]
-        ).first():
-            admin_user = User(
-                username=app.config["ADMIN_USERNAME"],
-                role="admin",
-                is_admin=True
-            )
-            admin_user.set_password(app.config["ADMIN_PASSWORD"])
-            db.session.add(admin_user)
-            db.session.commit()
-            print("Admin user created!")
+        # Check if role column exists before seeding
+        from sqlalchemy import inspect
+        inspector = inspect(db.engine)
+        columns = [c['name'] for c in inspector.get_columns('user')]
 
-        if Product.query.count() == 0:
-            samples = [
-                Product(name="MacBook Pro M3", price=1999.99,
-                        category="Laptops", stock=15,
-                        description="Apple M3 chip, 16GB RAM",
-                        low_stock_threshold=5),
-                Product(name="iPhone 15 Pro", price=999.99,
-                        category="Phones", stock=8,
-                        description="Titanium design, A17 Pro",
-                        low_stock_threshold=5),
-                Product(name="AirPods Pro", price=249.99,
-                        category="Audio", stock=3,
-                        description="Active noise cancellation",
-                        low_stock_threshold=5),
-                Product(name="iPad Air M2", price=599.99,
-                        category="Tablets", stock=20,
-                        description="M2 chip, 10.9 inch display",
-                        low_stock_threshold=5),
-                Product(name="Magic Keyboard", price=99.99,
-                        category="Accessories", stock=2,
-                        description="Wireless, Touch ID",
-                        low_stock_threshold=5),
-            ]
-            db.session.add_all(samples)
-            db.session.commit()
-            print("Sample products added!")
+        if 'role' in columns:
+            if not User.query.filter_by(
+                username=app.config["ADMIN_USERNAME"]
+            ).first():
+                admin_user = User(
+                    username=app.config["ADMIN_USERNAME"],
+                    role="admin",
+                    is_admin=True
+                )
+                admin_user.set_password(app.config["ADMIN_PASSWORD"])
+                db.session.add(admin_user)
+                db.session.commit()
+                print("Admin user created!")
 
-    except Exception as e:
-        print(f"Seeding skipped: {e}")
-        db.session.rollback()
+            if Product.query.count() == 0:
+                samples = [
+                    Product(name="MacBook Pro M3", price=1999.99,
+                            category="Laptops", stock=15,
+                            description="Apple M3 chip, 16GB RAM",
+                            low_stock_threshold=5),
+                    Product(name="iPhone 15 Pro", price=999.99,
+                            category="Phones", stock=8,
+                            description="Titanium design, A17 Pro",
+                            low_stock_threshold=5),
+                    Product(name="AirPods Pro", price=249.99,
+                            category="Audio", stock=3,
+                            description="Active noise cancellation",
+                            low_stock_threshold=5),
+                    Product(name="iPad Air M2", price=599.99,
+                            category="Tablets", stock=20,
+                            description="M2 chip, 10.9 inch display",
+                            low_stock_threshold=5),
+                    Product(name="Magic Keyboard", price=99.99,
+                            category="Accessories", stock=2,
+                            description="Wireless, Touch ID",
+                            low_stock_threshold=5),
+                ]
+                db.session.add_all(samples)
+                db.session.commit()
+                print("Sample products added!")
+        else:
+            print("Skipping seed — migrations pending")
 
     return app
 
