@@ -45,7 +45,7 @@
                     Staff
                 </a>
                 {% endif %}
-                {% if current_user.is_admin_user%}
+                {% if current_user.is_admin_user %}
                 <a href="{{ url_for('products.add') }}"
                     class="text-sm text-white/60 hover:text-white transition-colors">
                     Add Products</a>

@@ -8,10 +8,12 @@
         <h1 class="text-3xl font-semibold text-white">Products</h1>
         <p class="text-white/40 text-sm mt-1">{{ products|length }} items in inventory</p>
     </div>
+    {% if current_user.is_admin_user %}
     <a href="{{url_for('products.add')}}"
         class="bg-white text-black px-5 py-2.5 rounded-full text-sm font-medium hover:bg-white/80 transition-colors inline-flex items-center">
         + Add Product
     </a>
+    {% endif %}
 </div>
 
 
@@ -101,10 +103,12 @@
     {% if not products %}
     <div class="text-center py-16">
         <p class="text-white/40 text-sm">No products yet!</p>
+        {% if current_user.is_admin_user %}
         <a href="{{url_for('products.add')}}" class="mt-4 inline-block bg-white text-black px-5 py-2.5
                   rounded-full text-sm hover:bg-white/80 transition-colors">
             Add your first product
         </a>
+        {% endif %}
     </div>
     {% endif %}
 </div>
