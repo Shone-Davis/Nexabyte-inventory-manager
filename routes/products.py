@@ -12,8 +12,13 @@ CATEGORIES = ["Laptops", "Phones", "Audio",
 @products.route("/products")
 @login_required
 def index():
-    all_products = Product.query.all()
-    return render_template("products/index.html", products=all_products)
+    category = request.args.get("category", "").strip()
+    if category:
+        all_products = Product.query.filter(Product.category == category).all()
+    else:
+        all_products = Product.query.all()
+
+    return render_template("products/index.html", products=all_products, categories=CATEGORIES, selected_category=category)
 
 
 @products.route("/products/add", methods=["GET", "POST"])

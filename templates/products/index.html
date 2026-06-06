@@ -16,6 +16,28 @@
     {% endif %}
 </div>
 
+<!-- Category Filter Bar -->
+<div class="flex items-center gap-2 mb-6 flex-wrap">
+    <a href="{{ url_for('products.index') }}" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors
+              {% if not selected_category %}
+                  bg-white text-black
+              {% else %}
+                  bg-white/10 text-white/60 hover:bg-white/20
+              {% endif %}">
+        All
+    </a>
+    {% for cat in categories %}
+    <a href="{{ url_for('products.index', category=cat) }}" class="px-4 py-1.5 rounded-full text-sm font-medium transition-colors
+              {% if selected_category == cat %}
+                  bg-white text-black
+              {% else %}
+                  bg-white/10 text-white/60 hover:bg-white/20
+              {% endif %}">
+        {{ cat }}
+    </a>
+    {% endfor %}
+</div>
+
 
 <!-- Products Table -->
 <div class="bg-white/5 border border-white/10 rounded-2xl overflow-hidden">
