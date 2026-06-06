@@ -28,6 +28,27 @@
 
 </div>
 
+<!-- CHARTS ROW -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+
+    <!-- Doughnut Chart - Products by Category -->
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <p class="text-sm text-white/40 mb-1">Products by Category</p>
+        <p class="text-white font-medium mb-6">Inventory Breakdown</p>
+        <div class="flex items-center justify-center">
+            <canvas id="categoryChart" width="250" height="250"></canvas>
+        </div>
+    </div>
+
+    <!-- Bar Chart - Stock Levels -->
+    <div class="bg-white/5 border border-white/10 rounded-2xl p-6">
+        <p class="text-sm text-white/40 mb-1">Stock Levels</p>
+        <p class="text-white font-medium mb-6">Top 5 Products</p>
+        <canvas id="stockChart" height="250"></canvas>
+    </div>
+
+</div>
+
 <!-- LOW STOCK WARNING -->
 {% if low_stock %}
 <div class="mb-10">
@@ -98,4 +119,80 @@
     </div>
 </div>
 
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Data from python
+    const categoryLabels = {{ category_labels | tojson }};
+    const categoryCounts = {{ category_counts | tojson }};
+    const stockLabels = {{ stock_labels | tojson }};
+    const stockValues = {{ stock_values | tojson }};
+
+    // Doughnut Chart 
+    const ctx1 = document.getElementById('categoryChart').getContext('2d');
+    new Chart(ctx1, {
+        type: 'doughnut',
+        data: {
+            labels: categoryLabels,
+            datasets: [{
+                data: categoryCounts,
+                backgroundColor: [
+                    'rgba(255, 255,255, 0.8)',
+                    'rgba(255, 255,255, 0.5)',
+                    'rgba(255, 255,255, 0.3)',
+                    'rgba(255, 255,255, 0.15)',
+                    'rgba(255, 255,255, 0.08)',
+                ],
+                borderColor: 'rgba(255, 255,255, 0.1)',
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: {
+                        color: 'rgba(255, 255,255, 0.6)',
+                        padding: 16,
+                        font: { size: 12 }
+                    }
+                }
+            },
+            cutout: '65%',
+        }
+    });
+
+    // Bar Chart
+    const ctx2 = document.getElementById('stockChart').getContext('2d');
+    new Chart(ctx2, {
+        type: 'bar',
+        data: {
+            labels: stockLabels,
+            datasets: [{
+                label: 'Units in Stock',
+                data: stockValues,
+                backgroundColor: 'rgba(255, 255,255, 0.15)',
+                borderColor: 'rgba(255, 255,255, 0.4)',
+                borderWidth: 1,
+                borderRadius: 6,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                x: {
+                    ticks: { color: 'rgba(255, 255,255, 0.4)', font: { size: 11 } },
+                    grid: { color: 'rgba(255, 255,255, 0.05)' },
+                },
+                y: {
+                    ticks: { color: 'rgba(255, 255,255, 0.4)', font: { size: 11 } },
+                    grid: { color: 'rgba(255, 255,255, 0.05)' },
+                    beginAtZero: true
+                }
+            }
+        }
+    })
+
+</script>
 {% endblock %}
