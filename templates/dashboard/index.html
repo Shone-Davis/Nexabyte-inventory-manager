@@ -36,7 +36,7 @@
         <p class="text-sm text-white/40 mb-1">Products by Category</p>
         <p class="text-white font-medium mb-6">Inventory Breakdown</p>
         <div class="flex items-center justify-center">
-            <canvas id="categoryChart" width="250" height="250"></canvas>
+            <canvas id="categoryChart" style="max-width: 200px; max-height: 200px;"></canvas>
         </div>
     </div>
 
@@ -44,7 +44,7 @@
     <div class="bg-white/5 border border-white/10 rounded-2xl p-6">
         <p class="text-sm text-white/40 mb-1">Stock Levels</p>
         <p class="text-white font-medium mb-6">Top 5 Products</p>
-        <canvas id="stockChart" height="250"></canvas>
+        <canvas id="stockChart" style="max-height: 220px;"></canvas>
     </div>
 
 </div>
@@ -52,7 +52,7 @@
 <!-- LOW STOCK WARNING -->
 {% if low_stock %}
 <div class="mb-10">
-    <h2 class="text-lg font-semibold text-white mb-4">⚠️ Low Stock Items</h2>
+    <h2 class="text-lg font-semibold text-white mb-4">❗Low Stock Items</h2>
     <div class="bg-red-500/10 border border-red-500/20 rounded-2xl overflow-hidden">
         <div class="overflow-x-auto">
             <table class="w-full text-sm">
@@ -128,6 +128,7 @@
     const stockLabels = {{ stock_labels | tojson }};
     const stockValues = {{ stock_values | tojson }};
 
+
     // Doughnut Chart 
     const ctx1 = document.getElementById('categoryChart').getContext('2d');
     new Chart(ctx1, {
@@ -149,17 +150,19 @@
         },
         options: {
             responsive: false,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     position: 'bottom',
                     labels: {
                         color: 'rgba(255, 255,255, 0.6)',
-                        padding: 16,
-                        font: { size: 12 }
+                        padding: 12,
+                        font: { size: 11 },
+                        boxwidth: 12,
                     }
                 }
             },
-            cutout: '65%',
+            cutout: '70%',
         }
     });
 
@@ -176,23 +179,38 @@
                 borderColor: 'rgba(255, 255,255, 0.4)',
                 borderWidth: 1,
                 borderRadius: 6,
+                barThickness: 28,
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
+                legend: { display: false }
+            },
+            scales: {
                 x: {
-                    ticks: { color: 'rgba(255, 255,255, 0.4)', font: { size: 11 } },
-                    grid: { color: 'rgba(255, 255,255, 0.05)' },
+                    ticks: {
+                        color: 'rgba(255,255,255,0.4)',
+                        font: { size: 10 },
+                        maxRotation: 35,
+                        minRotation: 35,
+                    },
+                    grid: { color: 'rgba(255,255,255,0.5)' }
                 },
                 y: {
-                    ticks: { color: 'rgba(255, 255,255, 0.4)', font: { size: 11 } },
-                    grid: { color: 'rgba(255, 255,255, 0.05)' },
+                    ticks: {
+                        color: 'rgba(255,255,255,0.4)',
+                        font: { size: 11 },
+                        stepSize: 1,
+                    },
+                    grid: { color: 'rgba(255,255,255,0.05)' },
                     beginAtZero: true
                 }
+
             }
         }
-    })
+    });
 
 </script>
 {% endblock %}
