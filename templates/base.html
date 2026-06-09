@@ -19,6 +19,162 @@
     </script>
 </head>
 
+{% if current_user.is_authenticated %}
+<!-- NEXABOT FLOATING WIDGET -->
+
+
+<!-- Chat Button -->
+<button id="nexabot-toggle" onclick="toggleNexabot()" class="fixed bottom-6 right-6 z-50 w-14 h-14
+               bg-white/10 text-white border border-white/20
+               rounded-full flex items-center justify-center
+               hover:bg-white hover:text-black
+               transition-all duration-300 backdrop-blur-sm
+               opacity-40 hover:opacity-100 group">
+    <span id="nexabot-icon" class="font-mono text-sm font-bold tracking-tighter">𝐍𝒙⟡</span>
+</button>
+
+<!-- Chat Window -->
+<div id="nexabot-window" class="fixed bottom-24 right-6 z-50 w-80 bg-[#111] border
+        border-white/10 rounded-2xl shadow-2xl hidden flex-col" style="height: 420px;">
+
+    <!-- Header -->
+    <div class="flex items-center justify-between px-4 py-3
+                border-b border-white/10">
+        <div class="flex items-center gap-2">
+            <span class="font-mono text-xs font-bold text-white">𝐍𝒙⟡</span>
+            <span class="text-white/60 text-xs font-medium">Nexabot</span>
+            <span class="w-1.5 h-1.5 bg-green-400 rounded-full"></span>
+        </div>
+        <button onclick="toggleNexabot()" class="text-white/40 hover:text-white text-lg transition-colors">
+            ✕
+        </button>
+    </div>
+
+    <!-- Messages -->
+    <div id="nexabot-messages" class="flex-1 overflow-y-auto p-4 space-y-3" style="flex: 1;">
+
+        <!-- Welcome message -->
+        <div class="flex gap-2">
+            <div class="bg-white/10 text-white/80 text-xs px-3 py-2
+                    rounded-xl rounded-tl-none max-w-[85%] leading-relaxed">
+                Hi! I'm Nexabot 👋 Ask me anything about your inventory,
+                stock levels, or staff.
+            </div>
+        </div>
+    </div>
+
+    <!-- Input -->
+    <div class="px-4 py-3 border-t border-white/10">
+        <div class="flex items-center gap-2">
+            <input id="nexabot-input" type="text" placeholder="Ask Nexabot...."
+                onkeydown="if(event.key==='Enter') sendMessage()" class="flex-1 bg-white/5 border border-white/10 text-white
+                    text-xs px-3 py-2 rounded-full placeholder-white/30
+                    focus:outline-none focus:ring-1 focus:ring-white/20">
+            <button onclick="sendMessage()" class="w-8 h-8 bg-white text-black rounded-full text-xs
+                    font-bold flex items-center justify-center
+                    hover:bg-white/90 transition-colors flex-shrink-0">
+                ↑
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Nexabot Js -->
+<script>
+    let conversationHistory = [];
+
+    function toggleNexabot() {
+        const window_ = document.getElementById('nexabot-window');
+        const icon = document.getElementById('nexabot-icon');
+        const isHidden = window_.classList.contains('hidden');
+
+        if (isHidden) {
+            window_.classList.remove('hidden');
+            window_.classList.add('flex');
+            icon.textContent = '✕';
+        } else {
+            window_.classList.add('hidden');
+            window_.classList.remove('flex');
+            icon.textContent = '𝐍𝒙⟡';
+        }
+    }
+
+    function addMessage(text, isUser) {
+        const messages = document.getElementById('nexabot-messages');
+        const div = document.createElement('div');
+        div.className = 'flex gap-2 ' + (isUser ? 'justify-end' : '');
+
+        const bubble = document.createElement('div');
+        bubble.className = isUser
+            ? 'bg-white text-black text-xs px-3 py-2 rounded-xl rounded-tr-none max-w-[85%] leading-relaxed'
+            : 'bg-white/10 text-white/80 text-xs px-3 py-2 rounded-xl rounded-tl-none max-w-[85%] leading-relaxed';
+        bubble.textContent = text;
+
+        div.appendChild(bubble);
+        messages.appendChild(div);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    function addTyping() {
+        const messages = document.getElementById('nexabot-messages');
+        const div = document.createElement('div');
+        div.className = 'flex gap-2';
+        div.id = 'typing-indicator';
+        div.innerHTML = `
+            <div class="bg-white/10 text-white/40 text-xs px-3 py-2 rounded-xl rounded-tl-none">
+                Nexabot is thinking...
+            </div>`;
+        messages.appendChild(div);
+        messages.scrollTop = messages.scrollHeight;
+    }
+
+    function removeTyping() {
+        const typing = document.getElementById('typing-indicator');
+        if (typing) typing.remove();
+    }
+
+    async function sendMessage() {
+        const input = document.getElementById('nexabot-input');
+        const message = input.value.trim();
+        if (!message) return;
+
+        conversationHistory.push({ role: "user", content: message });
+        addMessage(message, true);
+        input.value = '';
+        addTyping();
+
+        try {
+            const response = await fetch('/nexabot/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: message,
+                    history: conversationHistory
+                })
+            });
+
+            const data = await response.json();
+            removeTyping();
+
+            if (data.reply) {
+                conversationHistory.push({
+                    role: "assistant",
+                    content: data.reply
+                });
+                addMessage(data.reply, false);
+            } else {
+                addMessage("Sorry, something went wrong. Try again!", false);
+            }
+        } catch (error) {
+            removeTyping();
+            addMessage("Connection error. Please try again.", false);
+        }
+    }
+</script>
+
+{% endif %}
+
+
 <body class="bg-[#0a0a0a] text-white font-sans antialiased">
 
     <!--NAVBAR-->
