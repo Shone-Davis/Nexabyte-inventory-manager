@@ -7,9 +7,7 @@ and identify low-stock items through a centralized dashboard.
 ## Live Demo
 https://nexabyte-inventory-manager.up.railway.app
 
-***Demo Login:**
-- Username: admin
-- Password: admin123
+> Request demo credentials via GitHub or LinkedIn.
 
 ## Features
 - Secure authentication with password hashing
