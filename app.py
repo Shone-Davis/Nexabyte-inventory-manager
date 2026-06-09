@@ -37,18 +37,6 @@ def create_app():
     app.register_blueprint(admin)
     app.register_blueprint(nexabot)
 
-    # TEMPORARY — delete after use
-    @app.route("/update-admin-now")
-    def update_admin():
-        from werkzeug.security import generate_password_hash
-        admin_user = User.query.filter_by(username="admin").first()
-        if admin_user:
-            admin_user.password_hash = generate_password_hash(
-                "NxB@2026#secure")
-            db.session.commit()
-            return "Done! Delete this route now."
-        return "Admin not found!"
-
     # Error handlers
     @app.errorhandler(404)
     def not_found(e):
