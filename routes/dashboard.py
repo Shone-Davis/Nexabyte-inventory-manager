@@ -1,3 +1,4 @@
+from datetime import datetime, timedelta
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
 from models import Product
@@ -39,6 +40,29 @@ def index():
     stock_labels = [p.name for p in top_products]
     stock_values = [p.stock for p in top_products]
 
+    # products addup history weekly
+    one_week_ago = datetime.utcnow() - timedelta(days=7)
+
+    # products added this week
+    new_this_week = Product.query.filter(
+        Product.created_at >= one_week_ago
+    ).count()
+
+    total_last_week = total_products - new_this_week
+    # inventory value last week
+    old_products = Product.query.filter(
+        Product.created_at < one_week_ago
+    ).all()
+    value_last_week = sum(p.total_value for p in old_products)
+
+    # Value exchange percentage
+    if value_last_week > 0:
+        value_change = round(
+            ((total_value - value_last_week) / value_last_week) * 100, 1
+        )
+    else:
+        value_change = 0
+
     return render_template("dashboard/index.html",
                            total_products=total_products,
                            total_value=round(total_value, 2),
@@ -48,7 +72,10 @@ def index():
                            category_labels=category_labels,
                            category_counts=category_counts,
                            stock_labels=stock_labels,
-                           stock_values=stock_values
+                           stock_values=stock_values,
+                           new_this_week=new_this_week,
+                           total_last_week=total_last_week,
+                           value_change=value_change
                            )
 
 
