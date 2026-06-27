@@ -38,29 +38,23 @@ real-time analytics, and an AI-powered inventory assistant.
 
 ## Engineering Highlights
 
-**App Factory Pattern**
-Uses Flask's `create_app()` pattern to separate application configuration
-from initialization, improving modularity, testing, and environment-specific deployment.
+**App Factory Pattern**  
+Uses Flask's `create_app()` pattern to separate application configuration from initialization, improving modularity, testing, and environment-specific deployment.
 
-**Role-Based Authorization via Custom Decorator**
-Authorization is enforced through a custom `@admin_required` decorator, 
-centralizing permission checks and eliminating repetitive role validation 
-across routes.
+**Role-Based Authorization via Custom Decorator**  
+Authorization is enforced through a custom `@admin_required` decorator, centralizing permission checks and eliminating repetitive role validation across routes.
 
-**AI Context Injection**
-`Nexabot` injects live inventory data and conversation history into every OpenAI request, enabling accurate, multi-turn inventory queries based on current database state.
+**AI Context Injection**  
+`Nexabot` injects live inventory data and conversation history into every OpenAI request, enabling accurate multi-turn inventory queries based on current database state.
 
-**Database Migrations**
-Flask-Migrate manages schema evolution, while a startup validation prevents 
-database seeding before migrations complete, avoiding deployment failures on Railway.
+**Database Migrations**  
+Flask-Migrate manages schema evolution. A startup validation prevents database seeding before migrations complete, avoiding deployment failures on Railway.
 
-**Analytics Without Redundant Data**
+**Analytics Without Redundant Data**  
 Inventory metrics and weekly trends are computed directly from transactional data using SQLAlchemy queries, avoiding duplicate analytics tables and unnecessary schema complexity.
 
-**Blueprint Architecture**
-Functionality is organized into dedicated blueprints: `auth`,
-`products`, `dashboard`, `admin`, `nexabot`,keeping each domain isolated and the application easy to extend.
----
+**Blueprint Architecture**  
+Functionality is organized into dedicated blueprints: `auth`, `products`, `dashboard`, `admin`, `nexabot`, keeping each domain isolated and the application easy to extend.
 
 ## Features
 
