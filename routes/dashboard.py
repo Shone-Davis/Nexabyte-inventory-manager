@@ -1,8 +1,9 @@
 from datetime import datetime, timedelta
 from flask import Blueprint, render_template, redirect, url_for
 from flask_login import login_required, current_user
-from models import Product
 from sqlalchemy import func
+from models import Product
+
 dashboard = Blueprint("dashboard", __name__)
 
 
