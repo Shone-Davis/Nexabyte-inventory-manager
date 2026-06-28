@@ -1,8 +1,8 @@
 # Nexabyte — Inventory Management System
 
-A full-stack inventory management platform built with Flask, 
-PostgreSQL, and OpenAI, featuring role-based access control, 
-real-time analytics, and an AI-powered inventory assistant.
+Full-stack inventory management system with AI assistant, 
+role-based authentication, and real-time analytics. Built with Flask, 
+PostgreSQL, and OpenAI.
 
 [![Python](https://img.shields.io/badge/Python-3.12-blue?style=flat-square)](https://python.org)
 [![Flask](https://img.shields.io/badge/Flask-3.x-lightgrey?style=flat-square)](https://flask.palletsprojects.com)
